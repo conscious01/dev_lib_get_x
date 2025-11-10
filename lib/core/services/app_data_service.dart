@@ -29,9 +29,9 @@ class AppDataService extends GetxService {
     if (userFromDisk != null) {
       // B. 如果磁盘中有, 把它加载到内存 (currentUser.value)
       currentUser.value = userFromDisk;
-      logger.i("[AppDataService] 启动：已从磁盘加载用户 ${userFromDisk}");
+      logger.i("[AppDataService] 启动：已从磁盘加载用户 $userFromDisk");
     } else {
-      logger.i("[AppDataService] 启动：未找到本地用户。");
+      logger.i("[AppDataService] 启动：未登录");
     }
 
     return this;
@@ -40,10 +40,9 @@ class AppDataService extends GetxService {
   // (核心)
   // 6. "登录" 操作
   //    (LoginLogic 会调用这个)
-  Future<void> signIn(LoginEntity user, String token) async {
+  Future<void> saveLoginEntity(LoginEntity user) async {
     // A. 更新内存中的响应式变量
     currentUser.value = user;
-
     // B. 更新磁盘 (持久化)
     await _storage.saveUser(user);
   }

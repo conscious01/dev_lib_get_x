@@ -2,8 +2,6 @@ import 'package:dev_lib_getx/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import 'login_logic.dart';
 
@@ -141,26 +139,13 @@ class LoginPage extends GetView<LoginLogic> {
             SizedBox(height: 20.h),
 
             // --- 登录按钮 (带加载状态) ---
-            Obx(
-              () => ElevatedButton(
-                // (关键) 如果在加载中, onPressed 为 null (禁用按钮)
-                onPressed: controller.isLoading.value ? null : controller.login,
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                ),
-                child: controller.isLoading.value
-                    // (关键) 加载时显示转圈
-                    ? SizedBox(
-                        width: 20.w,
-                        height: 20.h,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.r,
-                          color: Colors.white,
-                        ),
-                      )
-                    // 正常时显示文字
-                    : Text('login_button'.tr, style: TextStyle(fontSize: 18.sp)),
+            ElevatedButton(
+              // (关键) 如果在加载中, onPressed 为 null (禁用按钮)
+              onPressed: controller.login,
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
               ),
+              child: Text('login_button'.tr, style: TextStyle(fontSize: 18.sp)),
             ),
           ],
         ),

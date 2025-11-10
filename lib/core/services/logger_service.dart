@@ -41,7 +41,7 @@ class LoggerService extends GetxService {
         errorMethodCount: 8, // 错误时显示 8 层
         lineLength: 120,
         colors: true,
-        printEmojis: true,
+        printEmojis: false,
       ),
     );
 

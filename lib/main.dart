@@ -23,9 +23,7 @@ Future<void> main() async {
 
   Get.put(DioService(storage: Get.find()), permanent: true);
   Get.put(
-      AppRepository(dio: Get
-          .find<DioService>()
-          .dio),
+      AppRepository(),
       permanent: true
   );
 
