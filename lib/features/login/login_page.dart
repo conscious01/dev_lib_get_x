@@ -1,3 +1,4 @@
+import 'package:dev_lib_getx/core/widgets/base_page.dart';
 import 'package:dev_lib_getx/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,26 +11,23 @@ class LoginPage extends GetView<LoginLogic> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // (关键) 我们用 Stack 来实现“背景图在下, 表单在上”
-      body: Stack(
-        fit: StackFit.expand, // 让 Stack 填满全屏
-        children: [
-          // --- 1. 背景层 ---
-          _buildBackgroundImage(),
+    return BasePage(child: Stack(
+      fit: StackFit.expand, // 让 Stack 填满全屏
+      children: [
+        // --- 1. 背景层 ---
+        _buildBackgroundImage(),
 
-          // --- 2. 蒙版层 (可选, 但推荐,
-          //         让白色文字在复杂背景上更清晰)
-          Container(color: Colors.black.withOpacity(0.3)),
+        // --- 2. 蒙版层 (可选, 但推荐,
+        //         让白色文字在复杂背景上更清晰)
+        Container(color: Colors.black.withOpacity(0.3)),
 
-          // --- 3. 表单层 ---
-          Center(
-            // (关键) Obx 负责在 "加载中" 和 "表单" 之间切换
-            child: _buildLoginForm(context),
-          ),
-        ],
-      ),
-    );
+        // --- 3. 表单层 ---
+        Center(
+          // (关键) Obx 负责在 "加载中" 和 "表单" 之间切换
+          child: _buildLoginForm(context),
+        ),
+      ],
+    ));
   }
 
   // --- UI 1: 背景图 ---
@@ -139,14 +137,38 @@ class LoginPage extends GetView<LoginLogic> {
             SizedBox(height: 20.h),
 
             // --- 登录按钮 (带加载状态) ---
-            ElevatedButton(
-              // (关键) 如果在加载中, onPressed 为 null (禁用按钮)
-              onPressed: controller.login,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-              ),
-              child: Text('login_button'.tr, style: TextStyle(fontSize: 18.sp)),
-            ),
+            Obx(() {
+              // (B) 获取两个状态
+              final bool isFormValid = controller.isFormValid.value;
+
+              return ElevatedButton(
+                onPressed: !isFormValid ? null : controller.login,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                ),
+                child: Text(
+                  'login_button'.tr,
+                  style: TextStyle(fontSize: 18.sp),
+                ),
+              );
+            }),
+
+            SizedBox(height: 20.h),
+
+            Obx(() {
+              // (B) 获取两个状态
+              final bool isFormValid = controller.isFormValid.value;
+              return ElevatedButton(
+                onPressed: !isFormValid ? null : controller.loginFull,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                ),
+                child: Text(
+                  'login_button_with_full_res'.tr,
+                  style: TextStyle(fontSize: 18.sp),
+                ),
+              );
+            }),
           ],
         ),
       ),

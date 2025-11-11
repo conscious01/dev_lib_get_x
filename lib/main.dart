@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'core/repository/app_repository.dart';
+import 'core/repository/app_network.dart';
 import 'core/services/logger_service.dart';
 import 'core/services/storage_service.dart';
 
@@ -23,7 +23,7 @@ Future<void> main() async {
 
   Get.put(DioService(storage: Get.find()), permanent: true);
   Get.put(
-      AppRepository(),
+      AppNetwork(),
       permanent: true
   );
 

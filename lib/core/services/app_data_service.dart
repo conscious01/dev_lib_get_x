@@ -1,4 +1,5 @@
-import 'package:dev_lib_getx/core/models/login_entity.dart';
+import 'package:dev_lib_getx/core/models/login_full_res_entity.dart';
+import 'package:dev_lib_getx/core/models/login_result_entity.dart';
 import 'package:dev_lib_getx/core/services/storage_service.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class AppDataService extends GetxService {
   // 3. (响应式) 在内存中持有用户状态
   //    使用 Rxn<User>() 意思是“一个可观察的 User, 它可以是 null”
   //    'currentUser' 是 'Rx<User?>' 的简写
-  final Rxn<LoginEntity> currentUser = Rxn<LoginEntity>();
+  final Rxn<LoginResultEntity> currentUser = Rxn<LoginResultEntity>();
 
   // (核心)
   // 4. (Getter) 提供一个简单的 'isLoggedIn' 检查器
@@ -40,7 +41,7 @@ class AppDataService extends GetxService {
   // (核心)
   // 6. "登录" 操作
   //    (LoginLogic 会调用这个)
-  Future<void> saveLoginEntity(LoginEntity user) async {
+  Future<void> saveLoginEntity(LoginResultEntity user) async {
     // A. 更新内存中的响应式变量
     currentUser.value = user;
     // B. 更新磁盘 (持久化)

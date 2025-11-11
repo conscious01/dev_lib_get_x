@@ -1,23 +1,22 @@
+import 'dart:io';
+
 import 'package:dev_lib_getx/core/services/logger_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
+
 import '../../routes/app_routes.dart';
-import '../constants/api_endpoints.dart';
+import '../constants/api_config.dart';
 import '../widgets/loading_dialog.dart';
 import 'app_data_service.dart';
 import 'storage_service.dart'; // 1. (依赖) 导入 StorageService
 
-
-
 class AppDioInterceptor extends Interceptor {
-
   // 依赖注入 (DI)
   final StorageService storage = Get.find<StorageService>();
   final AppDataService appData = Get.find<AppDataService>();
 
-  // (核心)
   // 用于跟踪当前有多少个请求正在进行
   // 以防止 Loading 弹窗过早关闭
   int _requestCount = 0;
@@ -25,20 +24,15 @@ class AppDioInterceptor extends Interceptor {
   // --- (A) 请求拦截 ---
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-
     // 1. (核心)
-    //    从 AppDataService 或 StorageService 读取 Token
-    //    (我们假设 AppDataService 在内存中持有它)
-    final token = appData.currentUser.value?.msg; // (假设你的实体类有 token)
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
+    // header添加请求头token
+    final token = "takeToken";
+    options.headers['token'] = 'Bearer $token';
 
     // 2. (核心)
     //    显示 Loading 弹窗 (Feature 1)
-
     // (可选) 检查是否需要显示 loading
-    final bool showLoading = options.extra['showLoading'] ?? true;
+    final bool showLoading = options.extra[ApiConfig.showLoading] ?? true;
 
     if (showLoading) {
       _requestCount++;
@@ -57,9 +51,9 @@ class AppDioInterceptor extends Interceptor {
   // --- (B) 响应拦截 ---
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-
     // 1. (核心) 关闭 Loading (Feature 1)
-    final bool showLoading = response.requestOptions.extra['showLoading'] ?? true;
+    final bool showLoading =
+        response.requestOptions.extra[ApiConfig.showLoading] ?? true;
     if (showLoading) {
       _requestCount--;
       // (关键) 只有在所有请求都完成后才关闭
@@ -75,22 +69,26 @@ class AppDioInterceptor extends Interceptor {
       Map<String, dynamic> data = response.data;
 
       // (假设) 你的 code 字段是 int
-      int code = data['code'];
-      String msg = data['msg'] ?? '未知错误';
+      int code = data[ApiConfig.resCode];
+      String msg = data[ApiConfig.resMsg] ?? 'network_error_unknown'.tr;
 
       // (关键) 检查是否需要显示 Toast
-      final bool showToast = response.requestOptions.extra['showToast'] ?? true;
+      final bool showToast =
+          response.requestOptions.extra[ApiConfig.showToast] ?? true;
 
       if (code != 200 && showToast) {
         // (核心) 显示 Toast
+        var title = "network_error_failed_code_is".trParams({
+          "code": code.toString(),
+        });
+
         Get.snackbar(
-          "请求失败 ($code)",
+          title,
           msg,
           backgroundColor: Colors.red.withOpacity(0.8),
           colorText: Colors.white,
         );
       }
-
     } catch (e) {
       logger.w("Dio Response: 解析响应体失败: $e");
     }
@@ -98,58 +96,111 @@ class AppDioInterceptor extends Interceptor {
     return handler.next(response);
   }
 
-  // --- (C) 错误拦截 ---
   @override
   void onError(DioException e, ErrorInterceptorHandler handler) {
-    logger.e("Dio Error: [${e.response?.statusCode}] ${e.requestOptions.path}", error: e);
+    logger.e(
+      "Dio Error: [${e.response?.statusCode}] ${e.requestOptions.path}",
+      error: e,
+    );
 
-    // 1. (核心) 关闭 Loading (Feature 1)
-    final bool showLoading = e.requestOptions.extra['showLoading'] ?? true;
+    // 1. (不变) 关闭 Loading
+    final bool showLoading =
+        e.requestOptions.extra[ApiConfig.showLoading] ?? true;
     if (showLoading) {
-      _requestCount = 0; // 发生错误时, 重置计数器并关闭
+      _requestCount = 0;
       Get.back();
     }
 
-    // 2. (核心) 处理 401 (Token 失效)
+    // 2. (不变) 处理 401 (Token 失效)
     if (e.response?.statusCode == 401) {
-      // (关键) 调用 AppDataService 登出,
-      //        它会清除内存和磁盘
       appData.signOut();
-      // (关键) 强制跳转到登录页
       Get.offAllNamed(AppRoutes.authLogin);
       Get.snackbar("会话已过期", "请重新登录");
-
-      // (重要) 我们"解决"了这个错误,
-      //        所以我们不应该 'next(e)'
-      //        而是创建一个虚拟的 Response
       return handler.resolve(
-          Response(requestOptions: e.requestOptions, data: null, statusCode: 200)
+        Response(requestOptions: e.requestOptions, data: null, statusCode: 200),
       );
     }
 
-    // 3. (核心)
-    //    处理其他错误 (超时, 没网络, 500)
-    //    (Feature 3 & 4)
-    final bool showToast = e.requestOptions.extra['showToast'] ?? true;
+    // (A) (关键!) 检查是否需要显示 Toast
+    final bool showToast = e.requestOptions.extra[ApiConfig.showToast] ?? true;
     if (showToast) {
+      // (B) (关键!)
+      //    不再使用 e.message,
+      //    而是调用我们的"错误翻译器"
+      final String friendlyMessage = _getFriendlyErrorMessage(e);
+
       Get.snackbar(
-        "网络错误",
-        e.message ?? "无法连接到服务器",
+        "network_error_request_failed".tr, // (一个统一的标题)
+        friendlyMessage, // (核心!) 使用"友好"的提示
         backgroundColor: Colors.red.withOpacity(0.8),
         colorText: Colors.white,
       );
     }
-
     return handler.next(e);
+  }
+
+  // (核心!)
+  // 4. (新增!)
+  //    "DioException 错误翻译器"
+  //    它将技术错误转换为用户友好的提示
+  String _getFriendlyErrorMessage(DioException e) {
+    // (核心)
+    // 我们检查 DioExceptionType
+    switch (e.type) {
+      // (A) 网络连接/DNS错误/连接被拒
+      //     (Dio 5.x 之前是 DioErrorType.other)
+      case DioExceptionType.connectionError:
+      case DioExceptionType.unknown: // (兜底)
+        // (可选) 我们可以更深入地检查 SocketException
+        if (e.error is SocketException) {
+          return "network_error_socket_exception".tr;
+        }
+        return "network_error_exception_unknown".tr;
+
+      // (B) 连接超时
+      case DioExceptionType.connectionTimeout:
+        return "network_error_timeout";
+
+      // (C) 响应超时
+      case DioExceptionType.receiveTimeout:
+        return "network_error_receive_timeout";
+
+      // (D) 发送超时
+      case DioExceptionType.sendTimeout:
+        return "network_error_send_timeout".tr;
+
+      // (E) 4xx / 5xx 错误
+      case DioExceptionType.badResponse:
+        // (注意) 401 已经在上面被处理了
+        if (e.response?.statusCode == 500 ||
+            e.response?.statusCode == 502 ||
+            e.response?.statusCode == 503) {
+          return "network_error_5_code"; // (5xx 统一提示)
+        }
+        // 404, 403, 400 (业务错误)
+        // 我们的 AppRepository 会*抛出* ApiException
+        // Interceptor 已经弹了 Toast ('msg' 字段)
+        // 所以在这里我们返回一个*通用*的
+
+        var msg = "network_error_failed_code_is".trParams({
+          "code": (e.response?.statusCode).toString(),
+        });
+
+        return msg;
+
+      // (F) 请求被取消
+      case DioExceptionType.cancel:
+        return "network_error_cancel".tr;
+      default:
+        return "network_error_unknown".tr;
+    }
   }
 }
 
-
-
 class DioService extends GetxService {
-
   // (核心) 依赖注入 StorageService
   final StorageService _storage;
+
   DioService({required StorageService storage}) : _storage = storage;
 
   // 'late' 保证它在 onInit 中被初始化
@@ -169,7 +220,7 @@ class DioService extends GetxService {
     final options = BaseOptions(
       connectTimeout: Duration(seconds: 20),
       receiveTimeout: Duration(seconds: 20),
-      baseUrl: ApiEndpoints.baseUrl,
+      baseUrl: ApiConfig.baseUrl,
       responseType: ResponseType.json,
     );
 

@@ -13,6 +13,8 @@ String loginResultEntityToJson(LoginResultEntity data) => json.encode(data.toJso
 
 @JsonSerializable()
 class LoginResultEntity {
+
+
   @JsonKey(name: "autoUpPosLeastMeters")
   int autoUpPosLeastMeters;
   @JsonKey(name: "ifHiddenOperatorSensitiveInfo")
@@ -38,6 +40,11 @@ class LoginResultEntity {
   factory LoginResultEntity.fromJson(Map<String, dynamic> json) => _$LoginResultEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginResultEntityToJson(this);
+
+  @override
+  String toString() {
+    return 'LoginResultEntity{autoUpPosLeastMeters: $autoUpPosLeastMeters, ifHiddenOperatorSensitiveInfo: $ifHiddenOperatorSensitiveInfo, ifHiddenPledge: $ifHiddenPledge, loginResultEntityOperator: $loginResultEntityOperator, parkPlaceMsg: $parkPlaceMsg, wxMiniAppCfg: $wxMiniAppCfg}';
+  }
 }
 
 @JsonSerializable()

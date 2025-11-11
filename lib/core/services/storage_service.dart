@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:dev_lib_getx/core/models/login_entity.dart';
+import 'package:dev_lib_getx/core/models/login_full_res_entity.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/login_result_entity.dart';
 import 'logger_service.dart';
 
 // (核心) 继承 GetxService
@@ -69,7 +70,7 @@ class StorageService extends GetxService {
 
   final _userKey = "userKey";
 
-  Future<void> saveUser(LoginEntity user) async {
+  Future<void> saveUser(LoginResultEntity user) async {
     try {
       // 1. (序列化) 调用 User 类的 .toJson()
       //    (这是由 json_serializable 生成的)
@@ -89,7 +90,7 @@ class StorageService extends GetxService {
 
   /// ✅ (实现) 读取 User 实体类
   /// 从本地读取 JSON 字符串, 并转换为 User 对象
-  LoginEntity? getUser() {
+  LoginResultEntity? getUser() {
     try {
       // 1. (读取) 从 SharedPreferences 读取 JSON 字符串
       final String? jsonString = _prefs.getString(_userKey);
@@ -103,7 +104,7 @@ class StorageService extends GetxService {
 
       // 3. (反序列化) 调用 User 类的 .fromJson()
       //    (这也是由 json_serializable 生成的)
-      final LoginEntity user = LoginEntity.fromJson(userMap);
+      final LoginResultEntity user = LoginResultEntity.fromJson(userMap);
 
       logger.i("[StorageService] 本地 User 读取成功");
       return user;

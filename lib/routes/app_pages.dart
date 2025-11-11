@@ -1,5 +1,7 @@
 import 'package:dev_lib_getx/features/login/login_binding.dart';
 import 'package:dev_lib_getx/features/login/login_page.dart';
+import 'package:dev_lib_getx/features/shell/shell_binding.dart';
+import 'package:dev_lib_getx/features/shell/shell_page.dart';
 import 'package:get/get.dart';
 
 import '../features/splash/splash_binding.dart';
@@ -20,6 +22,12 @@ class AppPages {
       name: AppRoutes.authLogin,
       page: () => LoginPage(),
       binding: LoginBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.shell,
+      page: () => ShellPage(),
+      binding: ShellBinding(),
     ),
   ];
 }

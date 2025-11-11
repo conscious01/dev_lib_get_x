@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_entity.dart';
+part of 'login_full_res_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginEntity _$LoginEntityFromJson(Map<String, dynamic> json) => LoginEntity(
+LoginFullResEntity _$LoginEntityFromJson(Map<String, dynamic> json) => LoginFullResEntity(
   code: (json['code'] as num).toInt(),
   msg: json['msg'] as String,
   data: Data.fromJson(json['data'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$LoginEntityToJson(LoginEntity instance) =>
+Map<String, dynamic> _$LoginEntityToJson(LoginFullResEntity instance) =>
     <String, dynamic>{
       'code': instance.code,
       'msg': instance.msg,

@@ -4,12 +4,12 @@ import 'dart:convert';
 
 part 'login_entity.g.dart';
 
-LoginEntity loginEntityFromJson(String str) => LoginEntity.fromJson(json.decode(str));
+LoginFullResEntity loginEntityFromJson(String str) => LoginFullResEntity.fromJson(json.decode(str));
 
-String loginEntityToJson(LoginEntity data) => json.encode(data.toJson());
+String loginEntityToJson(LoginFullResEntity data) => json.encode(data.toJson());
 
 @JsonSerializable()
-class LoginEntity {
+class LoginFullResEntity {
   @JsonKey(name: "code")
   int code;
   @JsonKey(name: "msg")
@@ -17,13 +17,13 @@ class LoginEntity {
   @JsonKey(name: "data")
   Data data;
 
-  LoginEntity({
+  LoginFullResEntity({
     required this.code,
     required this.msg,
     required this.data,
   });
 
-  factory LoginEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);
+  factory LoginFullResEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginEntityToJson(this);
 }
