@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String imagesDefaultAvatar = 'assets/images/default_avatar.png';
   static const String imagesLoginBg = 'assets/images/login_bg.jpg';
   static const String imagesSplash = 'assets/images/splash.png';
 

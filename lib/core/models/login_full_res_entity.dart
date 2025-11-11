@@ -1,8 +1,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
-
-part 'login_entity.g.dart';
+part 'login_full_res_entity.g.dart';
 
 LoginFullResEntity loginEntityFromJson(String str) => LoginFullResEntity.fromJson(json.decode(str));
 
@@ -23,9 +22,9 @@ class LoginFullResEntity {
     required this.data,
   });
 
-  factory LoginFullResEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);
+  factory LoginFullResEntity.fromJson(Map<String, dynamic> json) => _$LoginFullResEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginEntityToJson(this);
+  Map<String, dynamic> toJson() => _$LoginFullResEntityToJson(this);
 }
 
 @JsonSerializable()

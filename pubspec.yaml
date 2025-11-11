@@ -41,7 +41,7 @@ dependencies:
   json_annotation: ^4.9.0
   shared_preferences: ^2.5.3
   logger: ^2.6.2 # 日志
-  flutter_screenutil: ^5.9.3
+  flutter_screenutil: ^5.9.3  # 屏幕适配
 
 dev_dependencies:
   flutter_test:
