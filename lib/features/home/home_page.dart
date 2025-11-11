@@ -97,7 +97,7 @@ class HomePage extends GetView<HomeLogic> {
               padding: EdgeInsets.symmetric(vertical: 16.h),
             ),
             onPressed: () {
-              Get.offAllNamed(AppRoutes.sendEvent);
+              Get.toNamed(AppRoutes.sendEvent);
             },
             child: Text('跳转发送事件页面'.tr, style: TextStyle(fontSize: 18.sp)),
           ),
