@@ -8,7 +8,9 @@ class ThirdPage extends GetView<ThirdLogic> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("ThirdPage Title"),),
-      body: Center(child: Text("ThirdPage")),
+      body: Obx(() {
+        return Center(child: Text(controller.eventData.toString()));
+      }),
     );
   }
 }

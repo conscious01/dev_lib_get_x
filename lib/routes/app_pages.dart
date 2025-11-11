@@ -1,5 +1,7 @@
 import 'package:dev_lib_getx/features/login/login_binding.dart';
 import 'package:dev_lib_getx/features/login/login_page.dart';
+import 'package:dev_lib_getx/features/send_event/send_event_binding.dart';
+import 'package:dev_lib_getx/features/send_event/send_event_page.dart';
 import 'package:dev_lib_getx/features/shell/shell_binding.dart';
 import 'package:dev_lib_getx/features/shell/shell_page.dart';
 import 'package:get/get.dart';
@@ -29,5 +31,11 @@ class AppPages {
       page: () => ShellPage(),
       binding: ShellBinding(),
     ),
+
+    GetPage(
+      name: AppRoutes.sendEvent,
+      page: () => SendEventPage(),
+      binding: SendEventBinding(),
+    )
   ];
 }

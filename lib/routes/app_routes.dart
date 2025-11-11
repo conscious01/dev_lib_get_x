@@ -11,4 +11,7 @@ abstract class AppRoutes {
   static const home = '/home';
   static const list = '/list';
   static const profile = '/profile';
+
+  static const sendEvent = '/sendEvent';
+
 }

@@ -7,5 +7,7 @@ import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
 
 class ThirdLogic extends GetxController {
+  final AppDataService appData = Get.find<AppDataService>();
 
+  Rxn<dynamic> get eventData => appData.eventData;
 }

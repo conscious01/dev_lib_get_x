@@ -9,11 +9,14 @@ class SecondLogic extends GetxController {
 
   Rxn<LoginResultEntity> get user => appData.currentUser;
   late TextEditingController userNameController;
+  late TextEditingController eventController;
 
   @override
   void onInit() {
     super.onInit();
     userNameController = TextEditingController();
+    eventController = TextEditingController();
+
     userNameController = TextEditingController(
       text: user.value?.loginResultEntityOperator.name,
     );
@@ -22,6 +25,8 @@ class SecondLogic extends GetxController {
   @override
   void onClose() {
     userNameController.dispose();
+    eventController.dispose();
+
     super.onClose();
   }
 
@@ -62,5 +67,19 @@ class SecondLogic extends GetxController {
       backgroundColor: Colors.green,
       colorText: Colors.white,
     );
+  }
+
+  void sendEvent() {
+    final String eventData = eventController.text.trim();
+    if (eventData.isEmpty) {
+      Get.snackbar(
+        "操作失败",
+        "输入不能为空!",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+    appData.eventData.value = eventData;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../core/services/storage_service.dart';
+import '../../routes/app_routes.dart';
 
 class HomePage extends GetView<HomeLogic> {
   const HomePage({super.key});
@@ -87,7 +88,21 @@ class HomePage extends GetView<HomeLogic> {
         ),
       ),
 
-      body: Center(child: Text("Home Page")),
+      body: Column(
+        children: [
+          SizedBox(height: 20.h),
+
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+            ),
+            onPressed: () {
+              Get.offAllNamed(AppRoutes.sendEvent);
+            },
+            child: Text('跳转发送事件页面'.tr, style: TextStyle(fontSize: 18.sp)),
+          ),
+        ],
+      ),
     );
   }
 
