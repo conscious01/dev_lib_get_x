@@ -39,8 +39,6 @@ class ProfilePage extends GetView<ProfileLogic> {
               //    在头像下面显示用户名
               Obx(
                 () => Text(
-                  // (核心)
-                  //    直接从 Logic 的 'user' 响应式变量中读取
                   controller.user.value?.loginResultEntityOperator.name ?? '游客',
                   // (假设你的实体类有 'username')
                   style: TextStyle(

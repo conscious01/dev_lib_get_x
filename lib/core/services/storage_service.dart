@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dev_lib_getx/core/models/login_full_res_entity.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,5 +113,34 @@ class StorageService extends GetxService {
       logger.i("[StorageService] 读取 User 失败: $e");
       return null;
     }
+  }
+
+
+  static const String _themeKey = "app_theme_mode";
+  Future<void> saveThemeMode(ThemeMode mode) async {
+    await _prefs.setString(_themeKey, mode.name);
+  }
+
+  ThemeMode readThemeMode() {
+    // 1. 尝试读取已保存的 String
+    final String? themeName = _prefs.getString(_themeKey);
+
+    // 2. 如果*没有*保存过 (例如 App 第一次启动)
+    //    我们就返回 "跟随系统"
+    if (themeName == null) {
+      return ThemeMode.system;
+    }
+
+    // 3. (安全地)
+    //    把 String 转换回 ThemeMode.enum
+    if (themeName == 'light') {
+      return ThemeMode.light;
+    }
+    if (themeName == 'dark') {
+      return ThemeMode.dark;
+    }
+
+    // (默认)
+    return ThemeMode.system;
   }
 }

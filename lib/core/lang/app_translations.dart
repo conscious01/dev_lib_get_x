@@ -47,6 +47,16 @@ class AppTranslations extends Translations {
       'network_error_5_code': '服务器繁忙，请稍后再试',
       'network_error_cancel': '请求已取消',
 
+      'drawer_menu': '抽屉菜单',
+      'profile': '个人资料',
+      'first_page': '首页',
+      'second_page': '列表',
+      'third_page': '消息',
+      'profile_page': '我的',
+
+      'switch_to_light_theme': '切换到日间模式',
+      'switch_to_dark_theme': '切换到黑夜模式',
+
     },
 
     // --- 英文 (美国) ---
@@ -96,6 +106,20 @@ class AppTranslations extends Translations {
       'network_error_5_code': 'Server busy, please try again later',
 
       'network_error_cancel': 'Request canceled',
+      'drawer_menu': 'Drawer Menu',
+
+      'profile': 'Personal Profile',
+
+      'first_page': 'Home',
+
+      'second_page': 'List',
+
+      'third_page': 'Messages',
+
+      'profile_page': 'My Profile',
+      'switch_to_light_theme': 'Switch to daytime mode',
+
+      'switch_to_dark_theme': 'Switch to nighttime mode',
     },
   };
 }

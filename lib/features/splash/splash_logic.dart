@@ -30,6 +30,8 @@ class SplashLogic extends GetxController {
   void onInit() {
     super.onInit();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+
   }
 
   @override

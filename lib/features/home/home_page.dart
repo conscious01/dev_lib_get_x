@@ -1,88 +1,125 @@
 import 'package:dev_lib_getx/features/home/home_logic.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // (推荐) 导入
+
+import '../../core/services/storage_service.dart';
 
 class HomePage extends GetView<HomeLogic> {
-  const HomePage({super.key}); // (推荐) 添加 super.key
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    // (核心) 1.
-    //    你必须返回一个 Scaffold 才能拥有 Drawer
+    final bool isDarkMode = Get.isDarkMode;
     return Scaffold(
+      appBar: AppBar(title: Text("first_page".tr)),
 
-      // (核心) 2.
-      //    你 *必须* 添加一个 AppBar
-      //    Flutter 会自动检测到 'drawer' 属性,
-      //    并自动在左上角添加“汉堡”菜单图标 ☰
-      appBar: AppBar(
-        title: Text("首页"), // (你可以用 'home_title'.tr)
-        backgroundColor: Colors.blue, // (可选: 自定义颜色)
-      ),
-
-      // (核心) 3. (你的需求)
-      //    添加 "drawer" 属性
       drawer: Drawer(
-        // (推荐)
-        //    在 Drawer 内部使用 ListView,
-        //    以便内容可滚动
         child: ListView(
-
-          // (重要!)
-          //    移除 ListView 顶部的默认空白
           padding: EdgeInsets.zero,
 
           children: [
-
-            // (A) (推荐)
-            //     一个漂亮的抽屉头部
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue.shade700,
-              ),
+              decoration: BoxDecoration(color: Colors.blue.shade700),
               child: Text(
-                '抽屉菜单',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.sp, // (使用 .sp 适配)
-                ),
+                'drawer_menu'.tr,
+                style: TextStyle(color: Colors.white, fontSize: 24.sp),
               ),
             ),
 
-            // (B) (推荐)
-            //     菜单项
             ListTile(
               leading: Icon(Icons.account_circle),
-              title: Text('个人资料'),
+              title: Text('profile'.tr), // (推荐: 'profile_title'.tr)
               onTap: () {
-                // (核心)
-                // 1. (必须!) 先关闭抽屉
+                // (A) (不变) 先关闭抽屉
                 Get.back();
 
-                // 2. (可选) 再导航到新页面
-                //    (注意: 这会导航到 Shell *之上*)
-                // Get.toNamed(AppRoutes.PROFILE_DETAIL);
+                // (B) (核心!)
+                //    调用 ShellLogic 来切换到第 4 个 Tab (索引 3)
+                controller.goToProfile();
+              },
+            ),
+
+            // (核心) 5.
+            //    (新增!) 切换语言
+            ListTile(
+              leading: Icon(Icons.language),
+              title: Text('profile_change_language'.tr), // "切换语言"
+              // (核心) 6.
+              //    (你的需求) "显示出当前使用的什么语言"
+              //    我们在这里直接读取 GetX 的全局 locale
+              subtitle: Text(
+                Get.locale?.languageCode == 'zh'
+                    ? "当前: 中文"
+                    : "Current: English",
+              ),
+
+              onTap: () {
+                // (A) (可选)
+                //     我们*不*关闭抽屉 (Get.back()),
+                //     而是直接弹出语言对话框
+                _showLanguageDialog(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('设置'),
+              // (核心) 4.
+              //    根据当前状态, 显示不同图标
+              leading: Icon(
+                isDarkMode
+                    ? Icons.light_mode_outlined
+                    : Icons.dark_mode_outlined,
+              ),
+
+              title: Text(
+                isDarkMode
+                    ? "switch_to_light_theme".tr
+                    : "switch_to_dark_theme".tr,
+              ),
+
               onTap: () {
+                final newMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+                Get.changeThemeMode(newMode);
+                Get.find<StorageService>().saveThemeMode(newMode);
                 Get.back();
               },
             ),
-
           ],
         ),
       ),
 
-      // (核心) 4.
-      //    把你 *原来* 的 UI (Center)
-      //    放到 'body' 属性里
-      body: Center(
-        child: Text("Home Page"),
+      body: Center(child: Text("Home Page")),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: Text('profile_change_language'.tr),
+        content: Column(
+          mainAxisSize: MainAxisSize.min, // 让 Column 包裹内容
+          children: [
+            // (A) 切换到中文
+            ListTile(
+              title: Text("中文 (简体)"),
+              onTap: () {
+                // (核心)
+                //    调用 GetX 的 i18n API
+                //    GetX 会自动重绘所有 .tr 文本
+                Get.updateLocale(const Locale('zh', 'CN'));
+                Get.back(); // 关闭对话框
+              },
+            ),
+
+            // (B) 切换到英文
+            ListTile(
+              title: Text("English (US)"),
+              onTap: () {
+                Get.updateLocale(const Locale('en', 'US'));
+                Get.back(); // 关闭对话框
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

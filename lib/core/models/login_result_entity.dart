@@ -2,93 +2,57 @@
 //
 //     final loginResultEntity = loginResultEntityFromJson(jsonString);
 
-import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'login_result_entity.freezed.dart';
 part 'login_result_entity.g.dart';
 
-LoginResultEntity loginResultEntityFromJson(String str) => LoginResultEntity.fromJson(json.decode(str));
+LoginResultEntity loginResultEntityFromJson(String str) =>
+    LoginResultEntity.fromJson(json.decode(str));
 
-String loginResultEntityToJson(LoginResultEntity data) => json.encode(data.toJson());
+String loginResultEntityToJson(LoginResultEntity data) =>
+    json.encode(data.toJson());
 
-@JsonSerializable()
-class LoginResultEntity {
+@freezed
+abstract class LoginResultEntity with _$LoginResultEntity {
+  const factory LoginResultEntity({
+    @JsonKey(name: "autoUpPosLeastMeters") required int autoUpPosLeastMeters,
+    @JsonKey(name: "ifHiddenOperatorSensitiveInfo")
+    required int ifHiddenOperatorSensitiveInfo,
+    @JsonKey(name: "ifHiddenPledge") required int ifHiddenPledge,
+    @JsonKey(name: "operator") required Operator loginResultEntityOperator,
+    @JsonKey(name: "parkPlaceMsg") required List<String> parkPlaceMsg,
+    @JsonKey(name: "wxMiniAppCfg") required WxMiniAppCfg wxMiniAppCfg,
+  }) = _LoginResultEntity;
 
-
-  @JsonKey(name: "autoUpPosLeastMeters")
-  int autoUpPosLeastMeters;
-  @JsonKey(name: "ifHiddenOperatorSensitiveInfo")
-  int ifHiddenOperatorSensitiveInfo;
-  @JsonKey(name: "ifHiddenPledge")
-  int ifHiddenPledge;
-  @JsonKey(name: "operator")
-  Operator loginResultEntityOperator;
-  @JsonKey(name: "parkPlaceMsg")
-  List<String> parkPlaceMsg;
-  @JsonKey(name: "wxMiniAppCfg")
-  WxMiniAppCfg wxMiniAppCfg;
-
-  LoginResultEntity({
-    required this.autoUpPosLeastMeters,
-    required this.ifHiddenOperatorSensitiveInfo,
-    required this.ifHiddenPledge,
-    required this.loginResultEntityOperator,
-    required this.parkPlaceMsg,
-    required this.wxMiniAppCfg,
-  });
-
-  factory LoginResultEntity.fromJson(Map<String, dynamic> json) => _$LoginResultEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LoginResultEntityToJson(this);
-
-  @override
-  String toString() {
-    return 'LoginResultEntity{autoUpPosLeastMeters: $autoUpPosLeastMeters, ifHiddenOperatorSensitiveInfo: $ifHiddenOperatorSensitiveInfo, ifHiddenPledge: $ifHiddenPledge, loginResultEntityOperator: $loginResultEntityOperator, parkPlaceMsg: $parkPlaceMsg, wxMiniAppCfg: $wxMiniAppCfg}';
-  }
+  factory LoginResultEntity.fromJson(Map<String, dynamic> json) =>
+      _$LoginResultEntityFromJson(json);
 }
 
-@JsonSerializable()
-class Operator {
-  @JsonKey(name: "name")
-  String name;
-  @JsonKey(name: "areaName")
-  String areaName;
-  @JsonKey(name: "zoneName")
-  String zoneName;
+@freezed
+abstract class Operator with _$Operator {
+  const factory Operator({
+    @JsonKey(name: "name") required String name,
+    @JsonKey(name: "areaName") required String areaName,
+    @JsonKey(name: "zoneName") required String zoneName,
+  }) = _Operator;
 
-  Operator({
-    required this.name,
-    required this.areaName,
-    required this.zoneName,
-  });
-
-  factory Operator.fromJson(Map<String, dynamic> json) => _$OperatorFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OperatorToJson(this);
+  factory Operator.fromJson(Map<String, dynamic> json) =>
+      _$OperatorFromJson(json);
 }
 
-@JsonSerializable()
-class WxMiniAppCfg {
-  @JsonKey(name: "evasionBackPage")
-  String evasionBackPage;
-  @JsonKey(name: "parkOutPage")
-  String parkOutPage;
-  @JsonKey(name: "appId")
-  String appId;
-  @JsonKey(name: "appSecret")
-  String appSecret;
-  @JsonKey(name: "ifTurnOn")
-  String ifTurnOn;
+@freezed
+abstract class WxMiniAppCfg with _$WxMiniAppCfg {
+  const factory WxMiniAppCfg({
+    @JsonKey(name: "evasionBackPage") required String evasionBackPage,
+    @JsonKey(name: "parkOutPage") required String parkOutPage,
+    @JsonKey(name: "appId") required String appId,
+    @JsonKey(name: "appSecret") required String appSecret,
+    @JsonKey(name: "ifTurnOn") required String ifTurnOn,
+  }) = _WxMiniAppCfg;
 
-  WxMiniAppCfg({
-    required this.evasionBackPage,
-    required this.parkOutPage,
-    required this.appId,
-    required this.appSecret,
-    required this.ifTurnOn,
-  });
-
-  factory WxMiniAppCfg.fromJson(Map<String, dynamic> json) => _$WxMiniAppCfgFromJson(json);
-
-  Map<String, dynamic> toJson() => _$WxMiniAppCfgToJson(this);
+  factory WxMiniAppCfg.fromJson(Map<String, dynamic> json) =>
+      _$WxMiniAppCfgFromJson(json);
 }

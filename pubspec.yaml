@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.5.3
   logger: ^2.6.2 # 日志
   flutter_screenutil: ^5.9.3  # 屏幕适配
+  freezed_annotation: ^3.1.0 #
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   json_serializable: ^6.11.1
+  freezed: ^3.2.3 #  freezed （“冻结”） 是 用来生成 copyWith （以及 ==, toString 等） 的
 
 
 # For information on the generic Dart part of this file, see the
