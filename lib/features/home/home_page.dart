@@ -88,20 +88,47 @@ class HomePage extends GetView<HomeLogic> {
         ),
       ),
 
-      body: Column(
-        children: [
-          SizedBox(height: 20.h),
+      body: Center(
+        child: Column(
+          children: [
+            SizedBox(height: 20.h),
 
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 16.h),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.sendEvent);
+              },
+              child: Text(
+                'jump_2_send_event_page'.tr,
+                style: TextStyle(fontSize: 18.sp),
+              ),
             ),
-            onPressed: () {
-              Get.toNamed(AppRoutes.sendEvent);
-            },
-            child: Text('跳转发送事件页面'.tr, style: TextStyle(fontSize: 18.sp)),
-          ),
-        ],
+
+            SizedBox(height: 20.h),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.listPage);
+              },
+              child: Text('list_page'.tr, style: TextStyle(fontSize: 18.sp)),
+            ),
+
+            SizedBox(height: 20.h),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.commonWidgetOrStyle);
+              },
+              child: Text('common_component_button_style'.tr, style: TextStyle(fontSize: 18.sp)),
+            ),
+          ],
+        ),
       ),
     );
   }

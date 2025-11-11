@@ -14,4 +14,8 @@ abstract class AppRoutes {
 
   static const sendEvent = '/sendEvent';
 
+  static const listPage = '/listPage';
+  static const commonWidgetOrStyle = '/commonWidgetOrStyle';
+
+
 }

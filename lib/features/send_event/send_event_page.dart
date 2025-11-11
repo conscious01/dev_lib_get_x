@@ -21,7 +21,7 @@ class SendEventPage extends GetView<SendEventLogic> {
               Expanded(
                 child: TextField(
                   controller: controller.eventController,
-                  decoration: InputDecoration(labelText: "输入任何"),
+                  decoration: InputDecoration(labelText: "input_any".tr),
                 ),
               ),
 
@@ -30,7 +30,7 @@ class SendEventPage extends GetView<SendEventLogic> {
               // (核心) 2.
               //    连接 'onPressed'
               ElevatedButton(
-                child: Text("发送通知给其他页面"),
+                child: Text("send_event_2_other_page".tr),
                 onPressed: () {
                   // (核心)
                   //    调用 Logic (控制器) 的方法
