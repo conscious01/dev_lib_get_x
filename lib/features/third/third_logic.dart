@@ -5,7 +5,7 @@ import 'package:dev_lib_getx/models/model_get_with_params.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/api_config.dart';
-import '../../core/repository/app_network.dart';
+import '../../core/repository/network_repository.dart';
 import '../../core/services/logger_service.dart';
 import '../../models/model_batch_get_data_2.dart';
 import '../../models/model_batch_post_data_2.dart';
@@ -14,7 +14,7 @@ import '../../models/model_combined_step_2.dart';
 enum ParamsData { failed, success, none, admin, user }
 
 class ThirdLogic extends GetxController {
-  final AppNetwork appRepo = Get.find<AppNetwork>();
+  final NetworkRepository networkRepo = Get.find<NetworkRepository>();
 
   Rx<ParamsData> batchGetData1 = ParamsData.success.obs;
   Rx<ParamsData> batchGetData2 = ParamsData.success.obs;
@@ -26,7 +26,7 @@ class ThirdLogic extends GetxController {
 
   Rx<ParamsData> getWithParams = ParamsData.none.obs;
 
-  var apiResultString = "".obs;
+  var apiResultString = "这里用来显示请求网络的结果".obs;
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
@@ -93,7 +93,7 @@ class ThirdLogic extends GetxController {
         break;
     }
     requestParam["role"] = value;
-    final resultData = await appRepo.getData<List<ModelGetWithParams>>(
+    final resultData = await networkRepo.getData<List<ModelGetWithParams>>(
       ApiConfig.getDataWithParam,
       queryParameters: requestParam,
       fromJsonT: (json) => (json as List)
@@ -138,7 +138,7 @@ class ThirdLogic extends GetxController {
       errorMessage('');
 
       /// *不要* 'await' 它们
-      var batchGetData1 = appRepo.getData<ModelBatchGetData1>(
+      var batchGetData1 = networkRepo.getData<ModelBatchGetData1>(
         ApiConfig.batchGetData1,
         queryParameters: requestParam1,
         fromJsonT: (json) =>
@@ -147,7 +147,7 @@ class ThirdLogic extends GetxController {
         showToast: false,
       );
 
-      final batchGetData2 = appRepo.getData<ModelBatchGetData2>(
+      final batchGetData2 = networkRepo.getData<ModelBatchGetData2>(
         ApiConfig.batchGetData2,
         queryParameters: requestParam2,
         fromJsonT: (json) =>
@@ -156,7 +156,7 @@ class ThirdLogic extends GetxController {
         showToast: false,
       );
 
-      final batchPostData1 = appRepo.postData<ModelBatchPostData1>(
+      final batchPostData1 = networkRepo.postData<ModelBatchPostData1>(
         parameter: requestParam3,
         ApiConfig.batchPostGetData1,
         fromJsonT: (json) =>
@@ -165,7 +165,7 @@ class ThirdLogic extends GetxController {
         showToast: false,
       );
 
-      final batchPostData2 = appRepo.postData<ModelBatchPostData2>(
+      final batchPostData2 = networkRepo.postData<ModelBatchPostData2>(
         parameter: requestParam4,
         ApiConfig.batchPostGetData2,
         fromJsonT: (json) =>
@@ -207,8 +207,10 @@ class ThirdLogic extends GetxController {
   }
 
   Future<void> combinedRequest() async {
-
-    ModelCombinedStep2 modelCombinedStep2=ModelCombinedStep2(method: 'method1', value: 'value1');
+    ModelCombinedStep2 modelCombinedStep2 = ModelCombinedStep2(
+      method: 'method1',
+      value: 'value1',
+    );
     logger.i("modelCombinedStep2=>$modelCombinedStep2");
 
     apiResultString.value = "";
@@ -223,7 +225,7 @@ class ThirdLogic extends GetxController {
       isLoading(true);
       errorMessage('');
 
-      var combinedData1 = await appRepo.postData<ModelCombinedStep1>(
+      var combinedData1 = await networkRepo.postData<ModelCombinedStep1>(
         ApiConfig.combinedStep1,
         parameter: requestParam1,
         fromJsonT: (json) =>
@@ -231,7 +233,7 @@ class ThirdLogic extends GetxController {
         showLoading: true,
         showToast: false,
       );
-      apiResultString.value="combinedData1=>$combinedData1";
+      apiResultString.value = "combinedData1=>$combinedData1";
       logger.i("combinedData1=>$combinedData1");
 
       Map<String, dynamic> requestParam2 = {};
@@ -241,7 +243,7 @@ class ThirdLogic extends GetxController {
         requestParam2["value"] = "";
       }
 
-      final combinedData2 =await appRepo.postData<ModelCombinedStep2>(
+      final combinedData2 = await networkRepo.postData<ModelCombinedStep2>(
         ApiConfig.combinedStep2,
         parameter: requestParam2,
         fromJsonT: (json) =>
@@ -249,7 +251,7 @@ class ThirdLogic extends GetxController {
         showLoading: true,
         showToast: false,
       );
-      apiResultString.value="combinedData2=>${combinedData2}";
+      apiResultString.value = "combinedData2=>${combinedData2}";
       logger.i("combinedData2=>$combinedData2");
     } on ApiException catch (e) {
       logger.e("combinedRequest", error: e);

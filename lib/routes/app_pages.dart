@@ -1,15 +1,17 @@
+import 'package:dev_lib_getx/features/article/article_list_page.dart';
 import 'package:dev_lib_getx/features/common_style/common_style_binding.dart';
 import 'package:dev_lib_getx/features/common_style/common_style_page.dart';
-import 'package:dev_lib_getx/features/list_page/list_page.dart';
-import 'package:dev_lib_getx/features/list_page/list_page_binding.dart';
 import 'package:dev_lib_getx/features/login/login_binding.dart';
 import 'package:dev_lib_getx/features/login/login_page.dart';
+import 'package:dev_lib_getx/features/post/post_list_binding.dart';
+import 'package:dev_lib_getx/features/post/post_list_page.dart';
 import 'package:dev_lib_getx/features/send_event/send_event_binding.dart';
 import 'package:dev_lib_getx/features/send_event/send_event_page.dart';
 import 'package:dev_lib_getx/features/shell/shell_binding.dart';
 import 'package:dev_lib_getx/features/shell/shell_page.dart';
 import 'package:get/get.dart';
 
+import '../features/article/article_list_binding.dart';
 import '../features/splash/splash_binding.dart';
 import '../features/splash/splash_page.dart';
 import 'app_routes.dart';
@@ -42,8 +44,20 @@ class AppPages {
 
     GetPage(
       name: AppRoutes.listPage,
-      page: () => ListPage(),
-      binding: ListPageBinding(),
+      page: () => PostListPage(),
+      binding: PostListBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.listPageUseBase,
+      page: () => ArticleListPage(),
+      binding: ArticleListBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.commonWidgetOrStyle,
+      page: () => CommonStylePage(),
+      binding: CommonStyleBinding(),
     ),
 
     GetPage(

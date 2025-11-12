@@ -162,8 +162,8 @@ class ThirdPage extends GetView<ThirdLogic> {
   Widget _buildGetParamsSelections() {
     return Obx(
       () => ListView(
-        shrinkWrap: true, // ✅ 关键
-        physics: NeverScrollableScrollPhysics(), // ✅ 禁止内部滚动
+        shrinkWrap: true, //  关键
+        physics: NeverScrollableScrollPhysics(), //  禁止内部滚动
         padding: EdgeInsets.symmetric(horizontal: 6.w),
         children: [
           SizedBox(height: 10.h),
@@ -182,13 +182,13 @@ class ThirdPage extends GetView<ThirdLogic> {
   Widget _buildBatchSelections() {
     return Obx(
       () => ListView(
-        shrinkWrap: true, // ✅ 关键
-        physics: NeverScrollableScrollPhysics(), // ✅ 禁止内部滚动
+        shrinkWrap: true, //  关键
+        physics: NeverScrollableScrollPhysics(), //  禁止内部滚动
         padding: EdgeInsets.symmetric(horizontal: 6.w),
         children: [
           SizedBox(height: 10.h),
           _buildRadioGroup(
-            title: "批量获取数据 1 (Batch Get 1)",
+            title: "Batch Get 1",
             groupValue: controller.batchGetData1.value,
             onChanged: controller.setBatchGetData1,
           ),
@@ -196,7 +196,7 @@ class ThirdPage extends GetView<ThirdLogic> {
           Divider(height: 1.h),
           SizedBox(height: 10.h),
           _buildRadioGroup(
-            title: "批量获取数据 2 (Batch Get 2)",
+            title: "Batch Get 2",
             groupValue: controller.batchGetData2.value,
             onChanged: controller.setBatchGetData2,
           ),
@@ -204,7 +204,7 @@ class ThirdPage extends GetView<ThirdLogic> {
           Divider(height: 8.h),
           SizedBox(height: 10.h),
           _buildRadioGroup(
-            title: "批量提交数据 1 (Batch Post 1)",
+            title: "Batch Post 1",
             groupValue: controller.batchPostData1.value,
             onChanged: controller.setBatchPostData1,
           ),
@@ -212,7 +212,7 @@ class ThirdPage extends GetView<ThirdLogic> {
           Divider(height: 8.h),
 
           _buildRadioGroup(
-            title: "批量提交数据 2 (Batch Post 2)",
+            title: "Batch Post 2",
             groupValue: controller.batchPostData2.value,
             onChanged: controller.setBatchPostData2,
           ),
@@ -225,12 +225,12 @@ class ThirdPage extends GetView<ThirdLogic> {
   Widget _buildCombinedSelections() {
     return Obx(
       () => ListView(
-        shrinkWrap: true, // ✅ 关键
-        physics: NeverScrollableScrollPhysics(), // ✅ 禁止内部滚动
+        shrinkWrap: true, //  关键
+        physics: NeverScrollableScrollPhysics(), //  禁止内部滚动
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
         children: [
           _buildRadioGroup(
-            title: "组合请求 1 (Combined Step1)",
+            title: "Combined Step1",
             groupValue: controller.combinedStep1.value,
             onChanged: controller.setCombinedData1,
           ),
@@ -238,7 +238,7 @@ class ThirdPage extends GetView<ThirdLogic> {
           Divider(height: 8.h),
 
           _buildRadioGroup(
-            title: "组合请求 2 (Combined Step2)",
+            title: "Combined Step2",
             groupValue: controller.combinedStep2.value,
             onChanged: controller.setCombinedData2,
           ),
@@ -262,7 +262,7 @@ class ThirdPage extends GetView<ThirdLogic> {
             onPressed: () {
               controller.batchRequest();
             },
-            child: Text('提交批量请求'),
+            child: Text('Batch Request'),
           ),
           SizedBox(height: 10.h),
         ],
@@ -284,7 +284,7 @@ class ThirdPage extends GetView<ThirdLogic> {
             onPressed: () {
               controller.combinedRequest();
             },
-            child: Text('组合网络请求'),
+            child: Text('Combined Request'),
           ),
           SizedBox(height: 10.h),
         ],

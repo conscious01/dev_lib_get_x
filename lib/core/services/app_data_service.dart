@@ -1,7 +1,7 @@
-import 'package:dev_lib_getx/core/models/login_result_entity.dart';
 import 'package:dev_lib_getx/core/services/storage_service.dart';
 import 'package:get/get.dart';
 
+import '../../models/login_result_entity.dart';
 import 'logger_service.dart';
 
 class AppDataService extends GetxService {

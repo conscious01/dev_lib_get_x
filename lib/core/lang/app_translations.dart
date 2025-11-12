@@ -44,7 +44,7 @@ class AppTranslations extends Translations {
       'drawer_menu': '抽屉菜单',
       'profile': '个人资料',
       'first_page': '首页',
-      'second_page': '列表',
+      'second_page': '功能',
       'third_page': '网络',
       'profile_page': '我的',
       'switch_to_light_theme': '切换到日间模式',
@@ -53,10 +53,11 @@ class AppTranslations extends Translations {
       'input_new_user_name': '输入新用户名',
       'modify_user_name': '修改用户名',
       'input_any': '输入任何',
-      'send_event_2_other_page': '发送通知给其他页面',
-      'list_page': '列表页面',
-      'common_component_button_style': '通用组件/按钮样式封装',
+      'send_event_2_other_page': '发送通知',
+      'list_page_manually': '手写列表页面',
+      'list_page_use_base': '复用列表页面',
 
+      'common_component_button_style': '通用组件/按钮样式封装',
     },
     // --- 英文 (美国) ---
     'en_US': {
@@ -94,7 +95,7 @@ class AppTranslations extends Translations {
       'drawer_menu': 'Drawer Menu',
       'profile': 'Personal Profile',
       'first_page': 'Home',
-      'second_page': 'List',
+      'second_page': 'Function',
       'third_page': 'NetWork',
       'profile_page': 'My Profile',
       'switch_to_light_theme': 'Switch to daytime mode',
@@ -103,10 +104,11 @@ class AppTranslations extends Translations {
       'input_new_user_name': 'Enter new username',
       'modify_user_name': 'Modify username',
       'input_any': 'Enter any',
-      'send_event_2_other_page': 'Send notification to another page',
-      'list_page': 'List Page',
-      'common_component_button_style': 'General component/button style',
+      'send_event_2_other_page': 'Send Event',
+      'list_page_manually': 'List Page by Manually',
+      'list_page_use_base': 'List Page by Use Base',
 
+      'common_component_button_style': 'General component/button style',
     },
   };
 }

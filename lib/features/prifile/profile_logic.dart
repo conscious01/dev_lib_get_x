@@ -1,9 +1,9 @@
-import 'package:dev_lib_getx/core/models/login_result_entity.dart';
 import 'package:flutter/material.dart'; // (核心) 1. 导入 (用于 AlertDialog)
 import 'package:get/get.dart';
 import '../../core/services/app_data_service.dart'; // 导入
 import '../../core/services/dialog_service.dart';
 import '../../core/services/logger_service.dart'; // 导入
+import '../../models/login_result_entity.dart';
 import '../../routes/app_routes.dart'; // 导入
 
 // (不变)

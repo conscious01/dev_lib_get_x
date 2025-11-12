@@ -2,8 +2,8 @@ import 'package:dev_lib_getx/core/services/app_data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/models/login_result_entity.dart';
 import '../../core/services/dialog_service.dart';
+import '../../models/login_result_entity.dart';
 
 class SecondLogic extends GetxController {
   final AppDataService appData = Get.find<AppDataService>();

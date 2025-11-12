@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/api_config.dart';
-import '../../core/models/login_result_entity.dart';
-import '../../core/repository/app_network.dart';
+import '../../core/repository/network_repository.dart';
 import '../../core/services/app_data_service.dart';
 import '../../core/services/logger_service.dart';
 import '../../core/services/storage_service.dart';
 import '../../core/utils/api_params_builder.dart';
+import '../../models/login_result_entity.dart';
 import '../../routes/app_routes.dart';
 
 class LoginLogic extends GetxController {
-  final AppNetwork appRepo = Get.find<AppNetwork>();
+  final NetworkRepository networkRepo = Get.find<NetworkRepository>();
   final AppDataService appData = Get.find<AppDataService>();
   final StorageService storage = Get.find<StorageService>();
 
@@ -70,7 +70,7 @@ class LoginLogic extends GetxController {
         .password(passwordController.text)
         .build();
 
-    final loginResult = await appRepo.postData<LoginResultEntity>(
+    final loginResult = await networkRepo.postData<LoginResultEntity>(
       ApiConfig.authLogin,
       parameter: params,
       fromJsonT: (json) =>
@@ -98,7 +98,7 @@ class LoginLogic extends GetxController {
         .password(passwordController.text)
         .build();
 
-    final BaseResponseEntity<LoginResultEntity> response = await appRepo
+    final BaseResponseEntity<LoginResultEntity> response = await networkRepo
         .postDataWithFullRes<LoginResultEntity>(
           ApiConfig.authLogin,
           data: params,

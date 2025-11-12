@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'core/repository/app_network.dart';
+import 'core/repository/network_repository.dart';
 import 'core/services/logger_service.dart';
 import 'core/services/storage_service.dart';
 import 'core/theme/app_theme.dart';
@@ -25,7 +25,7 @@ Future<void> main() async {
   );
   Get.put(DialogService(), permanent: true);
   Get.put(DioService(storage: Get.find()), permanent: true);
-  Get.put(AppNetwork(), permanent: true);
+  Get.put(NetworkRepository(), permanent: true);
 
   final StorageService storage = Get.find<StorageService>();
   final ThemeMode savedThemeMode = storage.readThemeMode();

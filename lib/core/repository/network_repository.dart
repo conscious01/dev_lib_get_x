@@ -1,7 +1,7 @@
-
 import 'package:dev_lib_getx/core/services/logger_service.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+
 import '../constants/api_config.dart';
 import '../models/base_response_entity.dart';
 import '../services/dio_service.dart';
@@ -13,6 +13,7 @@ class ApiException implements Exception {
   final int code;
   final String message;
   final dynamic data;
+
   ApiException(this.code, this.message, {this.data});
 
   @override
@@ -21,7 +22,7 @@ class ApiException implements Exception {
   }
 }
 
-class AppNetwork {
+class NetworkRepository {
   final Dio _dio = Get.find<DioService>().dio;
 
   // --- (A) 90% 的情况: Logic 调用这些 (只返回 T) ---
@@ -34,7 +35,6 @@ class AppNetwork {
     bool showLoading = true,
     bool showToast = true,
   }) async {
-
     final baseResponse = await _request<T>(
       path,
       method: 'GET',
@@ -44,15 +44,17 @@ class AppNetwork {
       showToast: showToast,
     );
 
-
     if (baseResponse.code == ApiConfig.successCode) {
       if (baseResponse.data == null) {
-        throw ApiException(baseResponse.code, "data数据为空", data: baseResponse.data);
+        throw ApiException(
+          baseResponse.code,
+          "data数据为空",
+          data: baseResponse.data,
+        );
       }
 
       return baseResponse.data!;
     } else {
-
       throw ApiException(
         baseResponse.code,
         baseResponse.msg,
@@ -81,7 +83,11 @@ class AppNetwork {
     // (同上) 检查业务 code
     if (baseResponse.code == ApiConfig.successCode) {
       if (baseResponse.data == null) {
-        throw ApiException(baseResponse.code, "data数据为空", data: baseResponse.data);
+        throw ApiException(
+          baseResponse.code,
+          "data数据为空",
+          data: baseResponse.data,
+        );
       }
       return baseResponse.data!;
     } else {

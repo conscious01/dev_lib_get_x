@@ -23,6 +23,8 @@ class ApiConfig {
   static const String combinedStep1 = "/combinedStep1";
   static const String combinedStep2 = "/combinedStep2";
 
+  static const String getPostListPaged = "/getPageList";
+
 
 
 }
