@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/models/login_result_entity.dart';
+import '../../core/services/dialog_service.dart';
 
 class SendEventLogic extends GetxController {
   final AppDataService appData = Get.find<AppDataService>();
+  final DialogService _dialog = Get.find<DialogService>();
 
   Rxn<LoginResultEntity> get user => appData.currentUser;
   late TextEditingController eventController;
@@ -25,12 +27,8 @@ class SendEventLogic extends GetxController {
   void sendEvent() {
     final String eventData = eventController.text.trim();
     if (eventData.isEmpty) {
-      Get.snackbar(
-        "操作失败",
-        "输入不能为空!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _dialog.showErrorToast("输入不能为空!");
+
       return;
     }
     appData.eventData.value = eventData;

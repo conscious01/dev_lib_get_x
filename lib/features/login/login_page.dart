@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../core/utils/validators.dart';
+import '../../core/widgets/app_text_field.dart';
 import 'login_logic.dart';
 
 class LoginPage extends GetView<LoginLogic> {
@@ -11,23 +13,25 @@ class LoginPage extends GetView<LoginLogic> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(child: Stack(
-      fit: StackFit.expand, // 让 Stack 填满全屏
-      children: [
-        // --- 1. 背景层 ---
-        _buildBackgroundImage(),
+    return BasePage(
+      child: Stack(
+        fit: StackFit.expand, // 让 Stack 填满全屏
+        children: [
+          // --- 1. 背景层 ---
+          _buildBackgroundImage(),
 
-        // --- 2. 蒙版层 (可选, 但推荐,
-        //         让白色文字在复杂背景上更清晰)
-        Container(color: Colors.black.withOpacity(0.3)),
+          // --- 2. 蒙版层 (可选, 但推荐,
+          //         让白色文字在复杂背景上更清晰)
+          Container(color: Colors.black.withOpacity(0.3)),
 
-        // --- 3. 表单层 ---
-        Center(
-          // (关键) Obx 负责在 "加载中" 和 "表单" 之间切换
-          child: _buildLoginForm(context),
-        ),
-      ],
-    ));
+          // --- 3. 表单层 ---
+          Center(
+            // (关键) Obx 负责在 "加载中" 和 "表单" 之间切换
+            child: _buildLoginForm(context),
+          ),
+        ],
+      ),
+    );
   }
 
   // --- UI 1: 背景图 ---
@@ -67,58 +71,21 @@ class LoginPage extends GetView<LoginLogic> {
             SizedBox(height: 40.h),
 
             // --- 用户名输入 ---
-            TextFormField(
+            AppTextField(
               controller: controller.userNameController,
-              decoration: InputDecoration(
-                labelText: 'input_username'.tr,
-                labelStyle: TextStyle(color: Colors.white70),
-                prefixIcon: Icon(Icons.people, color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white54),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'input_cant_be_empty'.tr; // <-- 你的规则 1
-                }
-                return null; // (null = 验证通过)
-              },
+              labelText: 'input_username'.tr,
+              prefixIcon: Icons.people,
+                validator: Validators.required,
             ),
             SizedBox(height: 20.h),
 
             // --- 密码输入 ---
-            TextFormField(
+            AppTextField(
               controller: controller.passwordController,
+              labelText: 'login_password'.tr,
+              prefixIcon: Icons.lock,
               obscureText: true,
-              // 隐藏密码
-              decoration: InputDecoration(
-                labelText: 'login_password'.tr,
-                labelStyle: TextStyle(color: Colors.white70),
-                prefixIcon: Icon(Icons.lock, color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white54),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'password_cant_be_empty'.tr;
-                }
-                if (value.length < 6) {
-                  return 'password_length_error1'.tr; // <-- 你的规则 2
-                }
-                if (value.length > 10) {
-                  return 'password_length_error2'.tr; // <-- 你的规则 3
-                }
-                return null; // (null = 验证通过)
-              },
+              validator: Validators.password,
             ),
             SizedBox(height: 10.h),
 

@@ -72,7 +72,7 @@ class LoginLogic extends GetxController {
 
     final loginResult = await appRepo.postData<LoginResultEntity>(
       ApiConfig.authLogin,
-      data: params,
+      parameter: params,
       fromJsonT: (json) =>
           LoginResultEntity.fromJson(json as Map<String, dynamic>),
     );

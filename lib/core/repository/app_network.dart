@@ -64,7 +64,7 @@ class AppNetwork {
   /// (公共) POST 请求 - 只返回 'data' (T)
   Future<T> postData<T>(
     String path, {
-    dynamic data,
+    dynamic parameter,
     required T Function(Object? json) fromJsonT,
     bool showLoading = true,
     bool showToast = true,
@@ -72,7 +72,7 @@ class AppNetwork {
     final baseResponse = await _request<T>(
       path,
       method: 'POST',
-      data: data,
+      parameter: parameter,
       fromJsonT: fromJsonT,
       showLoading: showLoading,
       showToast: showToast,
@@ -126,7 +126,7 @@ class AppNetwork {
     return _request<T>(
       path,
       method: 'POST',
-      data: data,
+      parameter: data,
       fromJsonT: fromJsonT,
       showLoading: showLoading,
       showToast: showToast,
@@ -140,7 +140,7 @@ class AppNetwork {
   Future<BaseResponseEntity<T>> _request<T>(
     String path, {
     required String method,
-    dynamic data,
+    dynamic parameter,
     Map<String, dynamic>? queryParameters,
     required T Function(Object? json) fromJsonT,
     bool showLoading = true,
@@ -148,7 +148,7 @@ class AppNetwork {
   }) async {
     final response = await _dio.request(
       path,
-      data: data,
+      data: parameter,
       queryParameters: queryParameters,
       options: Options(
         method: method,

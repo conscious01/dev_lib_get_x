@@ -44,8 +44,8 @@ class ShellPage extends GetView<ShellLogic> {
               label: "second_page".tr,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.message_outlined),
-              activeIcon: Icon(Icons.message),
+              icon: Icon(Icons.network_wifi_outlined),
+              activeIcon: Icon(Icons.network_wifi),
               label: "third_page".tr,
             ),
             BottomNavigationBarItem(

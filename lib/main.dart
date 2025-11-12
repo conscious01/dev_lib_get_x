@@ -1,5 +1,6 @@
 import 'package:dev_lib_getx/core/lang/app_translations.dart';
 import 'package:dev_lib_getx/core/services/app_data_service.dart';
+import 'package:dev_lib_getx/core/services/dialog_service.dart';
 import 'package:dev_lib_getx/core/services/dio_service.dart';
 import 'package:dev_lib_getx/routes/app_pages.dart';
 import 'package:dev_lib_getx/routes/app_routes.dart';
@@ -22,7 +23,7 @@ Future<void> main() async {
     () => AppDataService(storage: Get.find()).init(),
     permanent: true,
   );
-
+  Get.put(DialogService(), permanent: true);
   Get.put(DioService(storage: Get.find()), permanent: true);
   Get.put(AppNetwork(), permanent: true);
 
@@ -33,8 +34,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   final ThemeMode savedThemeMode;
+
   const MyApp({super.key, required this.savedThemeMode});
 
   // This widget is the root of your application.

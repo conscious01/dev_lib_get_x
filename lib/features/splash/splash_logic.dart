@@ -9,7 +9,7 @@ import '../../routes/app_routes.dart';
 class SplashLogic extends GetxController {
   final AppDataService appData = Get.find<AppDataService>();
 
-  var countDown = 3.obs;
+  var countDown = 1.obs;
   late final Timer _timer;
 
   @override

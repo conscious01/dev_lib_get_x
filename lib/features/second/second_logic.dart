@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/models/login_result_entity.dart';
+import '../../core/services/dialog_service.dart';
 
 class SecondLogic extends GetxController {
   final AppDataService appData = Get.find<AppDataService>();
-
+  final DialogService _dialog = Get.find<DialogService>();
   Rxn<LoginResultEntity> get user => appData.currentUser;
   late TextEditingController userNameController;
   late TextEditingController eventController;
@@ -36,19 +37,14 @@ class SecondLogic extends GetxController {
 
     // B. (可选) 校验
     if (newName.isEmpty) {
-      Get.snackbar(
-        "更新失败",
-        "用户名不能为空",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _dialog.showErrorToast("用户名不能为空");
       return;
     }
 
     // C. 获取当前用户
     final LoginResultEntity? oldUser = appData.currentUser.value;
     if (oldUser == null) {
-      Get.snackbar("错误", "用户未登录");
+      _dialog.showErrorToast("用户未登录");
       return;
     }
 
@@ -60,24 +56,13 @@ class SecondLogic extends GetxController {
     );
 
     await appData.saveLoginEntity(newUser);
-
-    Get.snackbar(
-      "更新成功",
-      "用户名已更新为: $newName",
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+    _dialog.showSuccessToast("用户名已更新为: $newName");
   }
 
   void sendEvent() {
     final String eventData = eventController.text.trim();
     if (eventData.isEmpty) {
-      Get.snackbar(
-        "操作失败",
-        "输入不能为空!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _dialog.showErrorToast("输入不能为空!");
       return;
     }
     appData.eventData.value = eventData;

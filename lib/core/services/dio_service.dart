@@ -8,12 +8,14 @@ import 'package:get/get.dart' hide Response;
 
 import '../../routes/app_routes.dart';
 import '../constants/api_config.dart';
-import '../widgets/loading_dialog.dart';
 import 'app_data_service.dart';
+import 'dialog_service.dart';
 import 'storage_service.dart'; // 1. (依赖) 导入 StorageService
 
 class AppDioInterceptor extends Interceptor {
   // 依赖注入 (DI)
+
+  final DialogService _dialog = Get.find<DialogService>();
   final StorageService storage = Get.find<StorageService>();
   final AppDataService appData = Get.find<AppDataService>();
 
@@ -38,10 +40,7 @@ class AppDioInterceptor extends Interceptor {
       _requestCount++;
       // (关键) 只有在第一个请求发起时才显示
       if (_requestCount == 1) {
-        Get.dialog(
-          const LoadingDialog(), // (一个简单的转圈 Widget)
-          barrierDismissible: false, // 不允许点击外部关闭
-        );
+        _dialog.showLoading();
       }
     }
 
@@ -58,7 +57,7 @@ class AppDioInterceptor extends Interceptor {
       _requestCount--;
       // (关键) 只有在所有请求都完成后才关闭
       if (_requestCount == 0) {
-        Get.back(); // 关闭 Get.dialog
+        _dialog.hideLoading(); // 关闭 Get.dialog
       }
     }
 
@@ -81,13 +80,7 @@ class AppDioInterceptor extends Interceptor {
         var title = "network_error_failed_code_is".trParams({
           "code": code.toString(),
         });
-
-        Get.snackbar(
-          title,
-          msg,
-          backgroundColor: Colors.red.withOpacity(0.8),
-          colorText: Colors.white,
-        );
+        _dialog.showErrorToast(title: title, msg);
       }
     } catch (e) {
       logger.w("Dio Response: 解析响应体失败: $e");
@@ -115,7 +108,7 @@ class AppDioInterceptor extends Interceptor {
     if (e.response?.statusCode == 401) {
       appData.signOut();
       Get.offAllNamed(AppRoutes.authLogin);
-      Get.snackbar("会话已过期", "请重新登录");
+      _dialog.showErrorToast(title: "会话已过期","请重新登录");
       return handler.resolve(
         Response(requestOptions: e.requestOptions, data: null, statusCode: 200),
       );
@@ -129,12 +122,8 @@ class AppDioInterceptor extends Interceptor {
       //    而是调用我们的"错误翻译器"
       final String friendlyMessage = _getFriendlyErrorMessage(e);
 
-      Get.snackbar(
-        "network_error_request_failed".tr, // (一个统一的标题)
-        friendlyMessage, // (核心!) 使用"友好"的提示
-        backgroundColor: Colors.red.withOpacity(0.8),
-        colorText: Colors.white,
-      );
+      _dialog.showErrorToast(title: "network_error_request_failed".tr,friendlyMessage);
+
     }
     return handler.next(e);
   }
@@ -198,6 +187,8 @@ class AppDioInterceptor extends Interceptor {
 }
 
 class DioService extends GetxService {
+  final DialogService _dialog = Get.find<DialogService>();
+
   // (核心) 依赖注入 StorageService
   final StorageService _storage;
 

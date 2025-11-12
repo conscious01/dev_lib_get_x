@@ -2,6 +2,7 @@ import 'package:dev_lib_getx/core/models/login_result_entity.dart';
 import 'package:flutter/material.dart'; // (核心) 1. 导入 (用于 AlertDialog)
 import 'package:get/get.dart';
 import '../../core/services/app_data_service.dart'; // 导入
+import '../../core/services/dialog_service.dart';
 import '../../core/services/logger_service.dart'; // 导入
 import '../../routes/app_routes.dart'; // 导入
 
@@ -12,6 +13,7 @@ class ProfileLogic extends GetxController {
   //    使用"服务定位" (Service Locator)
   //    获取你全局的 AppDataService
   final AppDataService appData = Get.find<AppDataService>();
+  final DialogService _dialog = Get.find<DialogService>();
 
   // (核心) 3.
   //    创建一个"计算属性" (getter)
@@ -24,37 +26,15 @@ class ProfileLogic extends GetxController {
 
   /// (Action 1)
   /// Page(视图) 将调用这个方法来"显示"对话框
-  void showLogoutDialog() {
-    Get.dialog(
-      AlertDialog(
-        // (推荐)
-        //    标题和内容也应该使用 i18n
-        title: Text('profile_logout'.tr),
-        content: Text('profile_logout_confirm_msg'.tr), // (例如: "您确定要退出吗?")
-
-        actions: [
-          // (A) 取消按钮
-          TextButton(
-            child: Text('cancel'.tr), // (例如: "取消")
-            onPressed: () {
-              Get.back(); // 只需关闭对话框
-            },
-          ),
-
-          // (B) 确认按钮
-          TextButton(
-            child: Text('confirm'.tr), // (例如: "确认")
-            onPressed: () {
-              // (关键!)
-              // 1. 先关闭对话框
-              Get.back();
-              // 2. 再调用*真正*的登出逻辑
-              _executeLogout();
-            },
-          ),
-        ],
-      ),
+  Future<void> showLogoutDialog() async {
+    final bool didConfirm = await _dialog.showConfirmDialog(
+      title: 'profile_logout'.tr,
+      content: 'profile_logout_confirm_msg'.tr,
     );
+
+    if (didConfirm) { // (核心!)
+      _executeLogout();
+    }
   }
 
   /// (Action 2)
@@ -77,12 +57,8 @@ class ProfileLogic extends GetxController {
       logger.e("退出登录失败", error: e, stackTrace: s);
       // (可选)
       //    给出一个友好的提示
-      Get.snackbar(
-        "操作失败",
-        "退出登录时发生错误, 请重试",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _dialog.showErrorToast("退出登录时发生错误, 请重试");
+
     }
   }
 }
