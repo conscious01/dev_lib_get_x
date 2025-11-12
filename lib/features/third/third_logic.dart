@@ -1,5 +1,6 @@
 import 'package:dev_lib_getx/models/model_batch_get_data_1.dart';
 import 'package:dev_lib_getx/models/model_batch_post_data_1.dart';
+import 'package:dev_lib_getx/models/model_combined_step_1.dart';
 import 'package:dev_lib_getx/models/model_get_with_params.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,7 @@ import '../../core/repository/app_network.dart';
 import '../../core/services/logger_service.dart';
 import '../../models/model_batch_get_data_2.dart';
 import '../../models/model_batch_post_data_2.dart';
+import '../../models/model_combined_step_2.dart';
 
 enum ParamsData { failed, success, none, admin, user }
 
@@ -204,7 +206,11 @@ class ThirdLogic extends GetxController {
     }
   }
 
-  void combinedRequest() {
+  Future<void> combinedRequest() async {
+
+    ModelCombinedStep2 modelCombinedStep2=ModelCombinedStep2(method: 'method1', value: 'value1');
+    logger.i("modelCombinedStep2=>$modelCombinedStep2");
+
     apiResultString.value = "";
     Map<String, dynamic> requestParam1 = {};
     if (combinedStep1.value == ParamsData.success) {
@@ -213,11 +219,50 @@ class ThirdLogic extends GetxController {
       requestParam1["response"] = false;
     }
 
-    Map<String, dynamic> requestParam2 = {};
-    if (combinedStep2.value == ParamsData.success) {
-      requestParam2["response"] = true;
-    } else {
-      requestParam2["response"] = false;
+    try {
+      isLoading(true);
+      errorMessage('');
+
+      var combinedData1 = await appRepo.postData<ModelCombinedStep1>(
+        ApiConfig.combinedStep1,
+        parameter: requestParam1,
+        fromJsonT: (json) =>
+            ModelCombinedStep1.fromJson(json as Map<String, dynamic>),
+        showLoading: true,
+        showToast: false,
+      );
+      apiResultString.value="combinedData1=>$combinedData1";
+      logger.i("combinedData1=>$combinedData1");
+
+      Map<String, dynamic> requestParam2 = {};
+      if (combinedStep1.value == ParamsData.success) {
+        requestParam2["value"] = combinedData1.value;
+      } else {
+        requestParam2["value"] = "";
+      }
+
+      final combinedData2 =await appRepo.postData<ModelCombinedStep2>(
+        ApiConfig.combinedStep2,
+        parameter: requestParam2,
+        fromJsonT: (json) =>
+            ModelCombinedStep2.fromJson(json as Map<String, dynamic>),
+        showLoading: true,
+        showToast: false,
+      );
+      apiResultString.value="combinedData2=>${combinedData2}";
+      logger.i("combinedData2=>$combinedData2");
+    } on ApiException catch (e) {
+      logger.e("combinedRequest", error: e);
+      errorMessage(e.message);
+      apiResultString.value = "combinedRequest请求失败: ${e.message}";
+    } catch (e) {
+      //    *必须* catch!
+      //    (只要有*一个*请求发生*网络*  (错误[DioException],  或*其他*错误[解析错误],  就会*立即*跳到这里)
+      logger.e("combinedRequest", error: e);
+      errorMessage(e.toString());
+      apiResultString.value = "combinedRequest: ${e.toString()}";
+    } finally {
+      isLoading(false);
     }
   }
 }

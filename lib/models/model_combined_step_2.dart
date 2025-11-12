@@ -19,7 +19,7 @@ String modelCombinedStep2ToJson(ModelCombinedStep2 data) =>
 abstract class ModelCombinedStep2 with _$ModelCombinedStep2 {
   const factory ModelCombinedStep2({
     @JsonKey(name: "method") required String method,
-    @JsonKey(name: "value") required int value,
+    @JsonKey(name: "value") required String value,
   }) = _ModelCombinedStep2;
 
   factory ModelCombinedStep2.fromJson(Map<String, dynamic> json) =>
