@@ -11,6 +11,8 @@ class AppTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
     // --- 中文 (简体, 中国) ---
     'zh_CN': {
+      'below_to_show_latest_event': '下面显示收到的Event',
+      'not_received_yet': '尚未收到',
       'login_welcome': '欢迎登录',
       'login_username': '用户名',
       'login_password': '密码',
@@ -56,11 +58,12 @@ class AppTranslations extends Translations {
       'send_event_2_other_page': '发送通知',
       'list_page_manually': '手写列表页面',
       'list_page_use_base': '复用列表页面',
-
       'common_component_button_style': '通用组件/按钮样式封装',
     },
     // --- 英文 (美国) ---
     'en_US': {
+      'not_received_yet': 'Not received yet',
+      'below_to_show_latest_event': 'Below is to show received event',
       'login_welcome': 'Welcome Back',
       'login_username': 'Username',
       'login_password': 'Password',

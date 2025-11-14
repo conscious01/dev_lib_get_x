@@ -114,7 +114,10 @@ class HomePage extends GetView<HomeLogic> {
               onPressed: () {
                 Get.toNamed(AppRoutes.listPage);
               },
-              child: Text('list_page_manually'.tr, style: TextStyle(fontSize: 18.sp)),
+              child: Text(
+                'list_page_manually'.tr,
+                style: TextStyle(fontSize: 18.sp),
+              ),
             ),
 
             SizedBox(height: 20.h),
@@ -125,9 +128,11 @@ class HomePage extends GetView<HomeLogic> {
               onPressed: () {
                 Get.toNamed(AppRoutes.listPageUseBase);
               },
-              child: Text('list_page_use_base'.tr, style: TextStyle(fontSize: 18.sp)),
+              child: Text(
+                'list_page_use_base'.tr,
+                style: TextStyle(fontSize: 18.sp),
+              ),
             ),
-
 
             SizedBox(height: 20.h),
             ElevatedButton(
@@ -137,8 +142,24 @@ class HomePage extends GetView<HomeLogic> {
               onPressed: () {
                 Get.toNamed(AppRoutes.commonWidgetOrStyle);
               },
-              child: Text('common_component_button_style'.tr, style: TextStyle(fontSize: 18.sp)),
+              child: Text(
+                'common_component_button_style'.tr,
+                style: TextStyle(fontSize: 18.sp),
+              ),
             ),
+
+            SizedBox(height: 20.h),
+            Text(
+              'below_to_show_latest_event'.tr,
+                style: TextStyle(fontSize: 18.sp)
+            ),
+            Divider(height: 1.h,),
+            SizedBox(height: 16.h),
+            Obx(() {
+              final String currentEvent =
+                  controller.eventData.value?.toString() ?? "not_received_yet".tr;
+              return Text(currentEvent,style: TextStyle(fontSize: 18.sp));
+            })
           ],
         ),
       ),
