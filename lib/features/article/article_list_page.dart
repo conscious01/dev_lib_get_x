@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../core/base/base_paging_view.dart';
 import '../../models/post_entity.dart';
 import '../post/post_item_card.dart';
+import 'article_item_card.dart';
 
 class ArticleListPage extends BasePagingView<ArticleListLogic, PostEntity> {
   const ArticleListPage({super.key});
@@ -14,7 +15,7 @@ class ArticleListPage extends BasePagingView<ArticleListLogic, PostEntity> {
 
   @override
   Widget buildItem(BuildContext context, PostEntity item) {
-    return PostItemCard(
+    return ArticleItemCard(
       post: item,
       onLikeTap: () {
         controller.updateItemState(item.title);
